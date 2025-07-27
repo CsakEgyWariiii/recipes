@@ -1,0 +1,119 @@
+$engine: 3
+$onesync: on
+name: ESX Legacy Full Setup
+author: ESX Framework + Overextended
+description: Official ESX Legacy recipe with full addon pack and Ox ecosystem.
+
+tasks:
+  # CFX default resources
+  - action: download_github
+    src: https://github.com/citizenfx/cfx-server-data
+    ref: master
+    subpath: resources
+    dest: ./resources/[cfx-default]
+
+  - action: remove_path
+    path: ./resources/[cfx-default]/[gameplay]/chat
+
+  # Recipe and server.cfg
+  - action: download_github
+    src: https://github.com/esx-framework/esx-recipes
+    ref: legacy
+    dest: ./tmp/recipe
+
+  - action: move_path
+    src: ./tmp/recipe/server.cfg
+    dest: ./server.cfg
+
+  # Database init
+  - action: connect_database
+
+  # ESX core
+  - action: download_github
+    src: https://github.com/esx-framework/esx-core
+    ref: main
+    dest: ./tmp/core
+
+  - action: query_database
+    file: ./tmp/core/[SQL]/legacy.sql
+
+  # Addons (official legacy repo)
+  - action: download_github
+    src: https://github.com/esx-framework/ESX-Legacy-Addons
+    ref: main
+    dest: ./tmp/addons
+
+  # Move ESX files to resources
+  - action: move_path
+    src: ./tmp/core/[core]
+    dest: ./resources/[core]
+
+  - action: move_path
+    src: ./tmp/addons/[esx_addons]
+    dest: ./resources/[esx_addons]
+
+  # Standalone stuff
+  - action: download_github
+    src: https://github.com/Bob74/bob74_ipl
+    ref: master
+    dest: ./resources/[standalone]/bob74_ipl
+
+  - action: download_github
+    src: https://github.com/AvarianKnight/pma-voice
+    ref: main
+    dest: ./resources/[standalone]/pma-voice
+
+  # Overextended ecosystem (ox_lib, ox_inventory, ox_target, ox_fuel, ox_doorlock)
+  - action: download_file
+    path: ./tmp/files/oxmysql.zip
+    url: https://github.com/overextended/oxmysql/releases/latest/download/oxmysql.zip
+  - action: unzip
+    src: ./tmp/files/oxmysql.zip
+    dest: ./resources/[standalone]
+
+  - action: download_file
+    path: ./tmp/files/ox_lib.zip
+    url: https://github.com/overextended/ox_lib/releases/latest/download/ox_lib.zip
+  - action: unzip
+    src: ./tmp/files/ox_lib.zip
+    dest: ./resources/[ox]
+
+  - action: download_file
+    path: ./tmp/files/ox_inventory.zip
+    url: https://github.com/overextended/ox_inventory/releases/latest/download/ox_inventory.zip
+  - action: unzip
+    src: ./tmp/files/ox_inventory.zip
+    dest: ./resources/[ox]
+
+  - action: download_file
+    path: ./tmp/files/ox_doorlock.zip
+    url: https://github.com/overextended/ox_doorlock/releases/latest/download/ox_doorlock.zip
+  - action: unzip
+    src: ./tmp/files/ox_doorlock.zip
+    dest: ./resources/[ox]
+
+  - action: download_github
+    src: https://github.com/overextended/ox_fuel
+    ref: main
+    dest: ./resources/[ox]/ox_fuel
+
+  - action: download_github
+    src: https://github.com/overextended/ox_target
+    ref: main
+    dest: ./resources/[ox]/ox_target
+
+  # Optional: illenium-appearance (if you want appearance support)
+  - action: download_github
+    src: https://github.com/iLLeniumStudios/illenium-appearance
+    ref: main
+    dest: ./resources/[standalone]/illenium-appearance
+
+  # Cleanup
+  - action: remove_path
+    path: ./tmp
+
+  # Patch inventory config
+  - action: replace_string
+    file: ./resources/[core]/es_extended/shared/config/main.lua
+    search: 'Config.CustomInventory = false'
+    replace: 'Config.CustomInventory = "ox"'
