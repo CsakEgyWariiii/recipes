@@ -5,7 +5,7 @@ author: WarriorsDev
 description: Full ESX Legacy pack with ox_inventory, illenium-appearance and Villamos aDuty
 
 tasks:
-  # Alap CFX resourcék
+  
   - action: download_github
     src: https://github.com/citizenfx/cfx-server-data
     ref: master
@@ -15,7 +15,7 @@ tasks:
   - action: remove_path
     path: ./resources/[cfx-default]/[gameplay]/chat
 
-  # Szerver cfg és recept meta
+  
   - action: download_github
     src: https://github.com/esx-framework/esx-recipes
     ref: legacy
@@ -25,10 +25,10 @@ tasks:
     src: ./tmp/recipe/server.cfg
     dest: ./server.cfg
 
-  # Adatbázis kapcsolat
+  
   - action: connect_database
 
-  # ESX Core
+  
   - action: download_github
     src: https://github.com/esx-framework/esx-core
     ref: main
@@ -37,7 +37,7 @@ tasks:
   - action: query_database
     file: ./tmp/core/[SQL]/legacy.sql
 
-  # ESX addonok
+  
   - action: download_github
     src: https://github.com/esx-framework/ESX-Legacy-Addons
     ref: main
@@ -51,13 +51,13 @@ tasks:
     src: ./tmp/addons/[esx_addons]
     dest: ./resources/[esx_addons]
 
-  # Illenium-appearance (skinchanger helyett)
+  
   - action: download_github
     src: https://github.com/iLLeniumStudios/illenium-appearance
     ref: main
     dest: ./resources/[standalone]/illenium-appearance
 
-  # Standalone resourcék
+  
   - action: download_github
     src: https://github.com/Bob74/bob74_ipl
     ref: master
@@ -68,7 +68,7 @@ tasks:
     ref: main
     dest: ./resources/[standalone]/pma-voice
 
-  # Overextended: ox_lib, ox_inventory, oxmysql, ox_target, ox_fuel, ox_doorlock
+  
   - action: download_file
     path: ./tmp/files/oxmysql.zip
     url: https://github.com/overextended/oxmysql/releases/latest/download/oxmysql.zip
@@ -107,19 +107,19 @@ tasks:
     ref: main
     dest: ./resources/[ox]/ox_target
 
-  # Villamos aDuty v2
+  
   - action: download_github
     src: https://github.com/kontarkantor/villamos_adutyv2
     ref: main
     dest: ./resources/[standalone]/villamos_adutyv2
 
-  # Config patch - inventory váltás ox-ra
+  
   - action: replace_string
     file: ./resources/[core]/es_extended/shared/config/main.lua
     search: 'Config.CustomInventory = false'
     replace: 'Config.CustomInventory = "ox"'
 
-  # Ensure parancsok a server.cfg végére
+  
   - action: append_text
     dest: ./server.cfg
     text: |
