@@ -1,11 +1,11 @@
 $engine: 3
 $onesync: on
-name: ESX Legacy Full Setup
-author: ESX Framework + Overextended
-description: Official ESX Legacy recipe with full addon pack and Ox ecosystem.
+name: ESX Legacy Full + Ox + Illenium
+author: WarriorsDev
+description: Full ESX Legacy pack with ox_inventory, illenium-appearance and Villamos aDuty
 
 tasks:
-  # CFX default resources
+  # Alap CFX resourcék
   - action: download_github
     src: https://github.com/citizenfx/cfx-server-data
     ref: master
@@ -15,7 +15,7 @@ tasks:
   - action: remove_path
     path: ./resources/[cfx-default]/[gameplay]/chat
 
-  # Recipe and server.cfg
+  # Szerver cfg és recept meta
   - action: download_github
     src: https://github.com/esx-framework/esx-recipes
     ref: legacy
@@ -25,10 +25,10 @@ tasks:
     src: ./tmp/recipe/server.cfg
     dest: ./server.cfg
 
-  # Database init
+  # Adatbázis kapcsolat
   - action: connect_database
 
-  # ESX core
+  # ESX Core
   - action: download_github
     src: https://github.com/esx-framework/esx-core
     ref: main
@@ -37,13 +37,12 @@ tasks:
   - action: query_database
     file: ./tmp/core/[SQL]/legacy.sql
 
-  # Addons (official legacy repo)
+  # ESX addonok
   - action: download_github
     src: https://github.com/esx-framework/ESX-Legacy-Addons
     ref: main
     dest: ./tmp/addons
 
-  # Move ESX files to resources
   - action: move_path
     src: ./tmp/core/[core]
     dest: ./resources/[core]
@@ -52,7 +51,13 @@ tasks:
     src: ./tmp/addons/[esx_addons]
     dest: ./resources/[esx_addons]
 
-  # Standalone stuff
+  # Illenium-appearance (skinchanger helyett)
+  - action: download_github
+    src: https://github.com/iLLeniumStudios/illenium-appearance
+    ref: main
+    dest: ./resources/[standalone]/illenium-appearance
+
+  # Standalone resourcék
   - action: download_github
     src: https://github.com/Bob74/bob74_ipl
     ref: master
@@ -63,7 +68,7 @@ tasks:
     ref: main
     dest: ./resources/[standalone]/pma-voice
 
-  # Overextended ecosystem (ox_lib, ox_inventory, ox_target, ox_fuel, ox_doorlock)
+  # Overextended: ox_lib, ox_inventory, oxmysql, ox_target, ox_fuel, ox_doorlock
   - action: download_file
     path: ./tmp/files/oxmysql.zip
     url: https://github.com/overextended/oxmysql/releases/latest/download/oxmysql.zip
@@ -102,18 +107,33 @@ tasks:
     ref: main
     dest: ./resources/[ox]/ox_target
 
-  # Optional: illenium-appearance (if you want appearance support)
+  # Villamos aDuty v2
   - action: download_github
-    src: https://github.com/iLLeniumStudios/illenium-appearance
+    src: https://github.com/kontarkantor/villamos_adutyv2
     ref: main
-    dest: ./resources/[standalone]/illenium-appearance
+    dest: ./resources/[standalone]/villamos_adutyv2
 
-  # Cleanup
-  - action: remove_path
-    path: ./tmp
-
-  # Patch inventory config
+  # Config patch - inventory váltás ox-ra
   - action: replace_string
     file: ./resources/[core]/es_extended/shared/config/main.lua
     search: 'Config.CustomInventory = false'
     replace: 'Config.CustomInventory = "ox"'
+
+  # Ensure parancsok a server.cfg végére
+  - action: append_text
+    dest: ./server.cfg
+    text: |
+      ensure oxmysql
+      ensure ox_lib
+      ensure ox_inventory
+      ensure ox_target
+      ensure ox_fuel
+      ensure ox_doorlock
+      ensure bob74_ipl
+      ensure pma-voice
+      ensure illenium-appearance
+      ensure villamos_adutyv2
+
+  # Cleanup
+  - action: remove_path
+    path: ./tmp
