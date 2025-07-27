@@ -149,18 +149,15 @@ tasks:
       ensure villamos_adutyv2
 
   # Cleanup
- - action: remove_path
+  - action: remove_path
     path: ./tmp
   - action: remove_path
     path: ./resources/[core]/esx_skin
   - action: remove_path
     path: ./resources/[core]/skinchanger
   - action: remove_path
-    path: ./resources/[core]/skinchanger
+    path: ./resources/[esx_addons]/esx_accessories
   - action: remove_path
-    path: ./resources/[core]/esx_accessories
+    path: ./resources/[esx_addons]/esx_barbershop
   - action: remove_path
-    path: ./resources/[core]/esx_barbershop
-  - action: remove_path
-    path: ./resources/[core]/esx_clotheshop
-    
+    path: ./resources/[esx_addons]/esx_clotheshop
