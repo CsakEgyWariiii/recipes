@@ -52,10 +52,24 @@ tasks:
     dest: ./resources/[esx_addons]
 
   
-  - action: download_github
-    src: https://github.com/iLLeniumStudios/illenium-appearance
-    ref: main
-    dest: ./resources/[standalone]/illenium-appearance
+  - action: download_file
+    url: https://github.com/iLLeniumStudios/illenium-appearance/releases/latest/download/illenium-appearance.zip
+    path: ./tmp/illenium-appearance.zip
+  - action: unzip
+    src: ./tmp/illenium-appearance.zip
+    dest: ./resources/[standalone]
+
+  - action: query_database
+    file: ./resources/[standalone]/illenium-appearance/sql/management_outfits.sql
+
+  - action: query_database
+    file: ./resources/[standalone]/illenium-appearance/sql/player_outfit_codes.sql
+
+  - action: query_database
+    file: ./resources/[standalone]/illenium-appearance/sql/player_outfits.sql
+
+  - action: query_database
+    file: ./resources/[standalone]/illenium-appearance/sql/playerskins.sql
 
   
   - action: download_github
@@ -135,5 +149,18 @@ tasks:
       ensure villamos_adutyv2
 
   # Cleanup
-  - action: remove_path
+ - action: remove_path
     path: ./tmp
+  - action: remove_path
+    path: ./resources/[core]/esx_skin
+  - action: remove_path
+    path: ./resources/[core]/skinchanger
+  - action: remove_path
+    path: ./resources/[core]/skinchanger
+  - action: remove_path
+    path: ./resources/[core]/esx_accessories
+  - action: remove_path
+    path: ./resources/[core]/esx_barbershop
+  - action: remove_path
+    path: ./resources/[core]/esx_clotheshop
+    
